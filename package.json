@@ -1,0 +1,26 @@
+{
+  "name": "paste-for-fetlife",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome extension: paste formatted text (Google Docs, Word, web pages, CMS editors) into FetLife with the formatting converted to FetLife's syntax.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "zip": "node scripts/build.mjs && rm -f paste-for-fetlife.zip && cd extension && zip -qr ../paste-for-fetlife.zip . -x '.*' && echo 'wrote paste-for-fetlife.zip'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "fixtures:update": "UPDATE_FIXTURES=1 vitest run test/fixtures.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@37signals/lexxy": "^1.0.3",
+    "@rails/activestorage": "^8.1.400",
+    "@types/node": "^22.20.5",
+    "esbuild": "^0.25.10",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

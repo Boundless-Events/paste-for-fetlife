@@ -1,0 +1,7 @@
+node_modules/
+extension/content.js
+paste-for-fetlife.zip
+.DS_Store
+playground/lexxy.js
+playground/*.css
+store/screenshots/*.tmp.html

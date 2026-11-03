@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paste for FetLife: Test Page</title>
+<link rel="stylesheet" href="lexxy.css">
+<script type="module" src="lexxy.js"></script>
+<style>
+  :root { color-scheme: dark; --fg: #e8e8e8; --muted: #a1a1a6; --bg: #141414; --card: #1e1e1e; --line: #3a3a3c; --accent: #e5534b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2.section { font-size: 18px; margin: 32px 0 4px; }
+  p.hint { margin: 0 0 12px; color: var(--muted); }
+  lexxy-editor { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 10px; min-height: 260px; color: var(--fg); }
+  lexxy-editor .lexxy-editor__content { min-height: 220px; padding: 12px 16px; }
+  lexxy-editor h2, lexxy-editor h3, lexxy-editor h4 { color: var(--accent); }
+  /* FetLife's own stylesheet styles these; the stock Lexxy stylesheet only does inside .lexxy-content. */
+  .lexxy-content__strikethrough { text-decoration: line-through; }
+  .lexxy-content__italic { font-style: italic; }
+  .lexxy-nested-listitem { list-style: none; }
+  textarea { width: 100%; min-height: 120px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--fg); font: 13px/1.5 ui-monospace, Menlo, monospace; }
+  button { font: inherit; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  .row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+  code { font-size: 0.9em; }
+  details { margin-top: 8px; color: var(--muted); }
+  pre { white-space: pre-wrap; word-break: break-word; font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Paste for FetLife: Test Page</h1>
+  <p class="hint">This page uses the same open-source editor as FetLife's event description (Lexxy), configured like it. Run <code>npm run build</code> first; the page loads the same script the extension runs on fetlife.com.</p>
+
+  <h2 class="section">1. Paste like it's a FetLife event</h2>
+  <p class="hint">Copy formatted text from Google Docs, Word, a web page or the Boundless CMS, then press Ctrl+V (⌘V on Mac) in the box.</p>
+  <lexxy-editor id="event" tables="false" code-blocks="false" attachments="false" placeholder="Description of event, performances, workshops, etc."></lexxy-editor>
+  <div class="row"><button id="clear">Clear</button></div>
+  <details><summary>What FetLife would receive (HTML)</summary><pre id="value"></pre></details>
+
+  <h2 class="section">2. Save a test sample</h2>
+  <p class="hint">Something came out wrong? Paste the same thing here (this box is not converted) and download it. Send the file to the maintainers, or add it to <code>test/fixtures/</code>.</p>
+  <textarea id="captured" placeholder="Paste here to capture the raw clipboard…"></textarea>
+  <div class="row"><button id="download" disabled>Download sample</button><span id="status"></span></div>
+</main>
+<script src="../extension/content.js"></script>
+<script type="module">
+  await customElements.whenDefined('lexxy-editor');
+  const editor = document.getElementById('event');
+  const show = () => { document.getElementById('value').textContent = editor.value.replace(/></g, '>\n<'); };
+  editor.addEventListener('lexxy:change', show);
+  document.getElementById('clear').onclick = () => { editor.value = ''; show(); };
+
+  let sample = '';
+  const captured = document.getElementById('captured');
+  const download = document.getElementById('download');
+  captured.addEventListener('paste', (e) => {
+    e.preventDefault();
+    sample = e.clipboardData.getData('text/html');
+    captured.value = sample || '(No formatting on the clipboard, only plain text. Nothing to convert.)';
+    download.disabled = !sample;
+    document.getElementById('status').textContent = sample ? `${sample.length.toLocaleString()} characters of HTML captured` : '';
+  });
+  download.onclick = () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([sample], { type: 'text/html' }));
+    a.download = `sample-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.html`;
+    a.click();
+  };
+
+  // ?demo: paste a sample automatically (used to make the store screenshots).
+  if (new URLSearchParams(location.search).has('demo')) {
+    const html = await (await fetch('../test/fixtures/google-docs.html')).text();
+    const content = editor.querySelector('[contenteditable]');
+    content.focus();
+    const dt = new DataTransfer();
+    dt.setData('text/html', html);
+    dt.setData('text/plain', 'Munch at the Park');
+    content.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+    show();
+  }
+</script>
+</body>
+</html>
