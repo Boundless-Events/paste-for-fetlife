@@ -32,6 +32,8 @@ A small "Formatted for FetLife · Undo" notice appears after each paste. Undo gi
 
 Plain text boxes (status updates, comments, messages), plain-text pastes and pasted pictures are left alone.
 
+Works on Windows, Mac, ChromeOS and Linux, in Chrome and other Chromium browsers such as Microsoft Edge and Brave.
+
 Private by design: runs only on fetlife.com, collects nothing, sends nothing. Open source (MIT).
 
 Not affiliated with or endorsed by FetLife.

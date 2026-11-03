@@ -25,6 +25,19 @@ describe('inline formatting', () => {
   });
 });
 
+describe('Windows clipboard format', () => {
+  test('ignores the StartFragment/EndFragment wrapper Chrome adds on Windows', () => {
+    const windowsClipboard =
+      '<html>\r\n<body>\r\n<!--StartFragment--><h1>Munch</h1><p>Come <b>say hi</b></p><!--EndFragment-->\r\n</body>\r\n</html>';
+    expect(convert(windowsClipboard)).toBe('<h2>Munch</h2><p>Come <strong>say hi</strong></p>');
+  });
+  test('Word for Windows conditional comments and XML blocks are ignored', () => {
+    const word =
+      '<html><head><!--[if gte mso 9]><xml><o:OfficeDocumentSettings></o:OfficeDocumentSettings></xml><![endif]--><style>p.MsoNormal{margin:0}</style></head><body><!--StartFragment--><p class=MsoNormal>Hi <b>there</b><o:p></o:p></p><!--EndFragment--></body></html>';
+    expect(convert(word)).toBe('<p>Hi <strong>there</strong></p>');
+  });
+});
+
 describe('links', () => {
   test('keeps absolute links, with formatting inside', () => {
     expect(convert('<p>Go <a href="https://ex.com/a?b=1&amp;c=2"><b>here</b></a>.</p>')).toBe(

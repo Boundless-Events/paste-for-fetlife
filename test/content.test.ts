@@ -94,6 +94,18 @@ test('Undo uses the editor\'s own undo, then FetLife\'s normal paste of the orig
   expect(notice()).toBeNull();
 });
 
+test.each([
+  ['Win32', { ctrlKey: true, metaKey: false }],
+  ['Linux x86_64', { ctrlKey: true, metaKey: false }],
+  ['MacIntel', { ctrlKey: false, metaKey: true }],
+])('Undo sends the right shortcut on %s', (platform, keys) => {
+  const spy = vi.spyOn(navigator, 'platform', 'get').mockReturnValue(platform);
+  userPaste(el('ev'), { 'text/html': '<h1>x</h1>', 'text/plain': 'x' });
+  (notice()!.shadowRoot!.querySelector('button') as HTMLButtonElement).click();
+  expect({ ctrlKey: keydowns[0].ctrlKey, metaKey: keydowns[0].metaKey }).toEqual(keys);
+  spy.mockRestore();
+});
+
 test('plain-text pastes are left to FetLife', () => {
   const e = userPaste(el('ev'), { 'text/plain': 'just text' });
   expect(e.defaultPrevented).toBe(false);
