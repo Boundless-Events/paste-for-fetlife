@@ -18,7 +18,7 @@ Not affiliated with or endorsed by FetLife.
 
 ## Install
 
-**From the Chrome Web Store:** _link coming once the listing is approved_. Works on Windows, Mac, ChromeOS and Linux, in Chrome and other Chromium browsers (Microsoft Edge: turn on **Allow extensions from other stores** when prompted; Brave works as is).
+**From the Chrome Web Store:** _link coming once the listing is approved_. Works in Chrome, Edge, Brave and other Chromium browsers.
 
 **From source** (for testing a change):
 
