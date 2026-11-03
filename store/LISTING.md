@@ -10,6 +10,8 @@ Paste these into the Developer Dashboard (https://chrome.google.com/webstore/dev
 - **Language:** English
 - **Icon:** `store/icon-128.png` (same as `extension/icons/icon-128.png`)
 - **Screenshots (1280×800):** `store/screenshots/`
+- **Small promo tile (440×280):** `store/promo-small-440x280.png`
+- **Marquee promo tile (1400×560):** `store/promo-marquee-1400x560.png`
 - **Homepage URL:** https://github.com/Boundless-Events/paste-for-fetlife
 - **Support URL:** https://github.com/Boundless-Events/paste-for-fetlife/issues
 - **Mature content:** No
