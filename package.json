@@ -1,6 +1,6 @@
 {
   "name": "paste-for-fetlife",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Chrome extension: paste formatted text (Google Docs, Word, web pages, CMS editors) into FetLife with the formatting converted to FetLife's syntax.",
   "license": "MIT",

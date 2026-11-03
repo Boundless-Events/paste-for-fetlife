@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Paste for FetLife",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Clean up formatting when you paste from Google Docs, Word, websites or your CMS into FetLife's event and writing editors.",
   "homepage_url": "https://github.com/Boundless-Events/paste-for-fetlife",
   "minimum_chrome_version": "110",
@@ -13,10 +13,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://fetlife.com/*", "https://*.fetlife.com/*"],
-      "js": ["content.js"],
-      "run_at": "document_idle",
-      "all_frames": true
+      "matches": [
+        "https://fetlife.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
     }
   ]
 }
